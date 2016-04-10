@@ -199,7 +199,7 @@ function stand(){
 
 ## 4.Demo
 
-[Demo地址](https://github.com/adspoing/blackjack)
+[Demo地址](http://adspoing.github.io/blackjack/index.html)
 
 
 

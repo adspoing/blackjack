@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>blackjack</title>
+    <link rel="Stylesheet" type="text/css" href="public/main.css" />
+    <link rel="Stylesheet" type="text/css" href="public/style.css" />
+</head>
+<body>
+ <div id="game">
+     <div id="dealer">
+         <div id="dealer-card"></div>
+         <p>Dealer's Score</p>
+         <div id="dealer-score">0</div>
+     </div>
+     <div id="player">
+         <div id="player-card"></div>
+         <p>Player's Score</p>
+         <div id="player-score">0</div>
+     </div>
+     <div id="btn">
+         <button class="button" id="hit">Hit</button>
+         <button class="button" id="stand">Stand</button>
+         <button class="button" id="init">Init</button>
+     </div>
+     <div id="winLos"> </div>
+     <div id="money">
+         <img src="img/dollar.png">
+         <span>Balance: </span>
+         <span id="dollar1">1000</span>
+         <img src="img/dollar.png">
+         <span>Bet: </span>
+         <span id="dollar2">0</span>
+         <button class="pr" id="plus">+</button>
+         <button class="button" id="insure">Insure</button>
+         <button class="button" id="deal">Deal</button>
+         <button class="pr" id="reduce">-</button>
+     </div>
+ </div>
+</body>
+<script src="scripts/game.js"></script>
+</html>

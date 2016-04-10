@@ -1,0 +1,99 @@
+*{
+    margin:0 ;
+    padding: 0;
+}
+
+body
+{
+    background-color:#fff;
+}
+#dealer
+{
+    padding-top: 20px;
+}
+#dealer-card
+{
+    display: inline-block;
+}
+#dealer p{
+    padding-top: 20px;
+    font-family: sans-serif;
+}
+#dealer-score{
+    font-family: sans-serif;
+    color:#890000;
+}
+
+#player{
+    padding-top: 20px;
+}
+#player-card
+{
+    display: inline-block;
+}
+#player p{
+    padding-top:20px;
+    font-family: sans-serif;
+}
+#player-score{
+    font-family:sans-serif ;
+    color:#890000;
+}
+#game{
+    width: 1280px;
+    margin: 0 auto;
+    background-color: #eee;
+    min-height: 720px;
+    text-align: center;
+}
+#btn{
+    padding-top: 10px;
+}
+.button{
+    width: 80px;
+    height:30px;
+    background-color: #890000;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    font-family: sans-serif;
+    font-size: 1em;
+    color:#ffffff;
+}
+.button:hover{opacity: 0.5 }
+
+#winLos{
+    padding-top: 20px;
+    font-family: sans-serif;
+    height:20px;
+    color: #ff0000;
+}
+
+#monney{
+    padding-bottom: 10px;
+}
+#money span{
+    font-family: sans-serif;
+    font-size: 1em;
+}
+#dollar2::after{
+    content: ".";
+    display: block;
+    height: 0;
+}
+#back
+{
+    float:left;
+    background:url("../img/back.jpg");
+}
+
+.pr{
+    width: 30px;
+    height:30px;
+    background-color: #890000;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    font-family: sans-serif;
+    font-size: 1em;
+    color:#ffffff;
+}
+.pr:hover{opacity: 0.5 }

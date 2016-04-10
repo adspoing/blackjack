@@ -7,6 +7,7 @@ var dealerCardDom=$('dealer-card');
 var dealerScore=$('dealer-score');
 var playerCardDom=$('player-card');
 var playerScore=$('player-score');
+/*get the button*/
 var hitBtn=$('hit');
 var standBtn=$('stand');
 var initBtn=$('init');
@@ -15,8 +16,13 @@ var plusBtn=$('plus');
 var reduceBtn=$('reduce');
 var insureBtn=$('insure');
 var dealBtn=$('deal');
+var newBtn=$('newgame');
+var insureBtn=$('insure');
+
+/*get the balance&bet num*/
 var balance=$('dollar1');
 var bet=$('dollar2');
+
 /*init card*/
 var dcard1;
 var dcard2;
@@ -27,6 +33,7 @@ var pcard2;
 var dealer=new Dealer();
 var player=new Player();
 
+/* whether deal*/
 var isdeal=0;
 
 /* event*/
@@ -42,6 +49,7 @@ var EventUtil = {
     }
 };
 
+/* add event*/
 EventUtil.addHandler(hitBtn,'click',hit);
 EventUtil.addHandler(standBtn,'click',stand);
 EventUtil.addHandler(initBtn,'click',init);
@@ -49,6 +57,8 @@ EventUtil.addHandler(plusBtn,'click',plus);
 EventUtil.addHandler(insureBtn,'click',insure);
 EventUtil.addHandler(reduceBtn,'click',reduce);
 EventUtil.addHandler(dealBtn,'click',deal);
+EventUtil.addHandler(newBtn,'click',newgame);
+EventUtil.addHandler(insureBtn,'click',insure);
 
 /* Object card*/
 function Card() {
@@ -97,32 +107,36 @@ Card.prototype.createCard=function(){
         return result + point + suit + "'>" + point + " <br/> " + suitString + ";</div>";
 };
 
+/* object people*/
 function People(){
-    this.cardArr=[];
+    this.cardArr=[];                    //玩家手上牌的数组
     this.score=function(){
-        return Score(this.cardArr);
+        return Score(this.cardArr);    //返回玩家手上牌的点数和
     }
     this.isBust=function(){
-        return Score(this.cardArr)>21;
+        return Score(this.cardArr)>21;  //判断是否爆
     }
     this.isBlackJack=function(){
-        return (Score(this.cardArr)==21);
+        return (Score(this.cardArr)==21);  //判断是否黑杰克
     }
 }
-function Player()
+
+/*object player*/
+function Player()  //玩家
 {
-    People.apply(this);
-    this.balanceNum=1000;
-    this.betNum=0;
+    People.apply(this);   //继承People
+    this.balanceNum=1000; //余额
+    this.betNum=0;          //赌金
 }
 
-function Dealer()
+/*object dealer*/
+function Dealer()  //庄家
 {
     People.apply(this);
 }
 
 
-
+/* count the score of  cards*/
 var Score=function(card){
         var result=0;
         var hasA=false;
@@ -139,6 +153,7 @@ var Score=function(card){
           return result+10;
        return result;
 }
+/* init a game*/
 function init(){
     winLos.innerHTML="";
     dealerScore.innerHTML=0;
@@ -164,23 +179,23 @@ function init(){
 
 function hit(){
     if(!player.isBust()&&!player.isBlackJack()&&winner==-2) {
-        var tempCard = new Card();
-        player.cardArr.push(tempCard);
+        var tempCard = new Card();   //创建一张新牌
+        player.cardArr.push(tempCard); //压入手上牌的数组中
         playerCardDom.innerHTML += tempCard.createCard();
         playerScore.innerHTML = Score(player.cardArr);
     }
-    if(player.isBust())
+    if(player.isBust())  //是否爆炸
     {
         lost();
         winLos.innerHTML="BUST";
     }
-    if(player.isBlackJack()&&winner!=1)
+    if(player.isBlackJack()) //是否21点
     {
         winLos.innerHTML="BlackJack";
     }
 }
 
-
+/*whether push*/
 function isPush() {
     return (player.score()==dealer.score())
 }
@@ -193,6 +208,8 @@ function isPush() {
  * */
 var winner=-2;
 
+
+/* win the game*/
 function win(){
     if(isdeal) {
         var Bet = player.betNum;
@@ -202,12 +219,16 @@ function win(){
         bet.innerHTML = player.betNum;
     }
 }
+
+/* lose the game*/
 function lost(){
     if(isdeal) {
         player.betNum = 0;
         bet.innerHTML = player.betNum;
     }
 }
+
+/*show the result*/
 function result(){
     if(dealer.isBust())  //dealer是否爆
     {
@@ -241,7 +262,8 @@ function result(){
 
 
 function stand(){
-    if(!player.isBust()) {
+    if(!player.isBust()&&winner==-2) {
+        /*先把背着的牌翻开来*/
         var dDom = "";
         for (x in dealer.cardArr) {
             dDom += dealer.cardArr[x].createCard();
@@ -249,30 +271,42 @@ function stand(){
         dealerCardDom.innerHTML = dDom;
         var dScore = dealer.score();
 
-        function addCard() {
-            var tcard = new Card();
-            dealer.cardArr.push(tcard);
-            dDom += tcard.createCard();
-            dScore = dealer.score();
-            dealerCardDom.innerHTML = dDom;
-            var t = setTimeout(addCard, 1000);
+        /*然后判断一下玩家是否已经21点了,如果是,则直接赢*/
+        if(player.isBlackJack()&&!dealer.isBlackJack())
+        {
+            win();
+            winLos.innerHTML="BlackJack";
             dealerScore.innerHTML = dScore;
-            if (dScore >= player.score()) {
-                clearTimeout(t);
+        }else {
+            /*如果玩家不是21点,那么就需要对庄家的分数进行判断*/
+            function addCard() {
+                var tcard = new Card();
+                dealer.cardArr.push(tcard);
+                dDom += tcard.createCard();
+                dScore = dealer.score();
+                dealerCardDom.innerHTML = dDom;
+                var t = setTimeout(addCard, 1000);
+                dealerScore.innerHTML = dScore;
+                /*如果分数大于玩家分数了,就不继续抽牌了*/
+                if (dScore >= player.score()) {
+                    clearTimeout(t);
+                    result();
+                }
+            };
+            /*如果此时庄家的分数小于玩家分数,那么庄家继续抽牌*/
+            if (dScore < player.score()) {
+                setTimeout(addCard, 1000);
+            }
+            /*否则就显示结果*/
+            else {
                 result();
             }
-        };
-        if (dScore < player.score()) {
-            setTimeout(addCard, 1000);
+            dealerScore.innerHTML = dScore;
         }
-        else {
-            result();
-        }
-        dealerScore.innerHTML = dScore;
     }
 }
 
-
+/* plus the bet num*/
 function plus()
 {
     if(player.balanceNum>0&&!isdeal) {
@@ -280,6 +314,7 @@ function plus()
         bet.innerHTML = player.betNum += 50;
     }
 }
+/* reduce the bet num*/
 function reduce()
 {
     if(player.betNum>0&&!isdeal) {
@@ -288,6 +323,35 @@ function reduce()
     }
 }
 
+/* add the insurance*/
+function insure(){
+    if(dcard1.PointNum==1){
+        var insurance = player.betNum / 2;
+        isdeal=1;
+
+        var dDom = "";
+        for (x in dealer.cardArr) {
+            dDom += dealer.cardArr[x].createCard();
+        }
+        dealerCardDom.innerHTML = dDom;
+        var dScore = dealer.score();
+        dealerScore.innerHTML = dScore;
+
+
+        balance.innerHTML = player.balanceNum -= insurance;
+
+        if(dcard2.PointNum>=10) {
+            player.balanceNum +=insurance;
+            win();
+        }
+        else
+        {
+            stand();
+        }
+    }
+}
+
+/* deal the game*/
 function deal(){
     if(isdeal==0) {
         isdeal = 1;
@@ -295,4 +359,10 @@ function deal(){
     }
 }
 
+/*new one game*/
+function newgame(){
+    dealer=new Dealer();
+    player=new Player();
+    init();
+}
 init();

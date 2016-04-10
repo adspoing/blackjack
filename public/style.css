@@ -46,19 +46,6 @@
 .rankQ  { background-position-x: -71.5em; }
 .rankK  { background-position-x: -78em; }
 
-/*/!* Lay cards out edge-to-edge *!/*/
-/*.card:nth-of-type(1) { left: 0; }*/
-/*.card:nth-of-type(2) { left: 7em; }*/
-/*.card:nth-of-type(3) { left: 14em; }*/
-/*.card:nth-of-type(4) { left: 21em; }*/
-/*.card:nth-of-type(5) { left: 28em; }*/
-
-/*/!* Lay cards out in a stacked hand showing indices *!/*/
-/*.hand .card:nth-of-type(1) { left: 0; }*/
-/*.hand .card:nth-of-type(2) { left: 1em; }*/
-/*.hand .card:nth-of-type(3) { left: 2em; }*/
-/*.hand .card:nth-of-type(4) { left: 3em; }*/
-/*.hand .card:nth-of-type(5) { left: 4em; }*/
 
 /* For FF compatibility, the combined rank-suit classes */
 .rankAC {color: #000; background-position: 0 0; }
